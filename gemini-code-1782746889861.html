@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriPlan Pro - Enterprise Meal Plan Builder</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 antialiased">
+
+    <header class="bg-emerald-700 text-white shadow-md">
+        <div class="container mx-auto px-6 py-5 flex justify-between items-center max-w-7xl">
+            <div>
+                <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
+                    🥗 NutriPlan Pro <span class="text-xs bg-emerald-900 text-emerald-300 font-bold px-2 py-0.5 rounded">v3.0 DB</span>
+                </h1>
+                <p class="text-emerald-100 text-xs mt-0.5">Enterprise Meal Plan Service Creator & Financial Suite</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-semibold text-emerald-200">Global Pricing: PHP (₱)</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-7xl space-y-8">
+
+        <section class="bg-slate-900 text-white p-6 rounded-3xl shadow-xl">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-100">Weekly Performance Matrix</h2>
+                    <p class="text-xs text-slate-400">Aggregated real-time structural financials and operational metrics across all 5 operational days.</p>
+                </div>
+                <div class="bg-slate-800 px-4 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2 text-emerald-400">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> DB Linked
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-slate-800/60 border border-slate-800 p-4 rounded-2xl">
+                    <span class="text-xs text-slate-400 uppercase tracking-wider block font-semibold">Total Weekly COGS</span>
+                    <div class="text-2xl font-black text-white mt-1">₱<span id="weekly-cogs">0.00</span></div>
+                </div>
+                <div class="bg-emerald-950/40 border border-emerald-900/50 p-4 rounded-2xl">
+                    <span class="text-xs text-emerald-400 uppercase tracking-wider block font-semibold">Target Weekly Revenue</span>
+                    <div class="text-2xl font-black text-emerald-400 mt-1">₱<span id="weekly-revenue">0.00</span></div>
+                </div>
+                <div class="bg-blue-950/40 border border-blue-900/50 p-4 rounded-2xl">
+                    <span class="text-xs text-blue-400 uppercase tracking-wider block font-semibold">Gross Weekly Margin</span>
+                    <div class="text-2xl font-black text-blue-400 mt-1">₱<span id="weekly-profit">0.00</span></div>
+                </div>
+                <div class="bg-slate-800/60 border border-slate-800 p-4 rounded-2xl flex flex-col justify-center space-y-1">
+                    <span class="text-[11px] font-bold tracking-wider uppercase text-slate-400">Aggregate Macro Profile</span>
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 text-xs font-mono">
+                        <div class="text-orange-400">🔥 <span id="weekly-kcal">0</span> <span class="text-[9px] text-slate-500">kcal</span></div>
+                        <div class="text-blue-400">🥩 <span id="weekly-protein">0</span><span class="text-[9px] text-slate-500">g Pro</span></div>
+                        <div class="text-amber-400">🌾 <span id="weekly-carbs">0</span><span class="text-[9px] text-slate-500">g Carb</span></div>
+                        <div class="text-red-400">🥑 <span id="weekly-fats">0</span><span class="text-[9px] text-slate-500">g Fat</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-slate-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Master Ingredient Database</h2>
+                    <p class="text-xs text-gray-500 mt-0.5">Define your inventory here. Updates will cascade to all recipes globally.</p>
+                </div>
+                <button onclick="addMasterIngredient()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow transition-all cursor-pointer">
+                    ➕ Add Database Item
+                </button>
+            </div>
+            <div class="p-4 overflow-x-auto max-h-80 overflow-y-auto">
+                <table class="w-full text-left min-w-[800px] border-collapse">
+                    <thead class="sticky top-0 bg-white">
+                        <tr class="text-[10px] uppercase font-bold text-gray-400 border-b border-gray-200 pb-2 bg-white">
+                            <th class="py-2 pl-2">Ingredient Name</th>
+                            <th class="py-2 w-20 text-center">Base Unit</th>
+                            <th class="py-2 w-24 text-center text-emerald-700">Cost/Unit (₱)</th>
+                            <th class="py-2 w-20 text-center">Kcal/Unit</th>
+                            <th class="py-2 w-20 text-center">Pro/Unit</th>
+                            <th class="py-2 w-20 text-center">Carb/Unit</th>
+                            <th class="py-2 w-20 text-center">Fat/Unit</th>
+                            <th class="py-2 w-10 text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="master-db-container" class="divide-y divide-gray-100 text-sm font-medium text-gray-700">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="bg-white p-2.5 rounded-2xl shadow-xs border border-gray-100">
+            <div class="grid grid-cols-5 gap-2">
+                <button onclick="switchDay('Monday')" id="btn-Monday" class="day-btn py-2.5 px-3 rounded-xl font-bold text-sm shadow-xs transition-all bg-emerald-600 text-white scale-101">Monday</button>
+                <button onclick="switchDay('Tuesday')" id="btn-Tuesday" class="day-btn py-2.5 px-3 rounded-xl font-medium text-sm transition-all bg-white text-gray-600 hover:bg-gray-50">Tuesday</button>
+                <button onclick="switchDay('Wednesday')" id="btn-Wednesday" class="day-btn py-2.5 px-3 rounded-xl font-medium text-sm transition-all bg-white text-gray-600 hover:bg-gray-50">Wednesday</button>
+                <button onclick="switchDay('Thursday')" id="btn-Thursday" class="day-btn py-2.5 px-3 rounded-xl font-medium text-sm transition-all bg-white text-gray-600 hover:bg-gray-50">Thursday</button>
+                <button onclick="switchDay('Friday')" id="btn-Friday" class="day-btn py-2.5 px-3 rounded-xl font-medium text-sm transition-all bg-white text-gray-600 hover:bg-gray-50">Friday</button>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <div class="lg:col-span-2 space-y-6">
+                <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                    <h2 class="text-xl font-black text-gray-800 tracking-tight" id="current-day-title">Monday Menu Engineering</h2>
+                    <span class="text-xs bg-gray-200 font-bold px-3 py-1 rounded-lg text-gray-600">Active Pipeline View</span>
+                </div>
+                
+                <div id="meals-container" class="space-y-6"></div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200/80 flex justify-between items-center">
+                    <p class="text-xs text-gray-500 max-w-md">Data synchronizes automatically. Use this to force a master cache refresh.</p>
+                    <button onclick="fullSystemRender()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-md transition-all transform active:scale-95 cursor-pointer">
+                        🔄 Sync & Recalculate
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-6 lg:sticky lg:top-6">
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+                    <h3 class="text-md font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100 flex items-center justify-between">
+                        <span>Day Financial Matrix</span>
+                        <span id="right-panel-day-tag" class="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md font-bold">Monday</span>
+                    </h3>
+                    
+                    <div class="mb-5 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider block">Day Cost of Goods (COGS)</span>
+                        <div class="text-2xl font-black text-gray-900 mt-0.5">₱<span id="display-cogs">0.00</span></div>
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Target Business Profit Margin</label>
+                        <div class="flex space-x-2">
+                            <input type="number" id="profit-percentage" value="40" min="0" max="99" oninput="calculateFinancials()" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-xl font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            <span class="bg-gray-100 border border-gray-300 px-3 py-2 rounded-xl text-xs text-gray-600 font-black flex items-center">%</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2.5 pt-4 border-t border-gray-100">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-gray-500 font-medium">Day Profit Gain:</span>
+                            <span class="font-bold text-emerald-600">₱<span id="display-profit-dollars">0.00</span></span>
+                        </div>
+                        <div class="flex justify-between items-center bg-emerald-50 p-3 rounded-xl border border-emerald-100/50">
+                            <span class="text-emerald-950 font-bold text-xs">Suggested Day Sale Price:</span>
+                            <span class="text-lg font-black text-emerald-700">₱<span id="display-sale-price">0.00</span></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-5 border-t border-gray-100">
+                        <h4 class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-2.5">Day Macro Aggregation Totals</h4>
+                        <div class="grid grid-cols-2 gap-2 text-center font-mono">
+                            <div class="bg-orange-50/70 border border-orange-100 p-2 rounded-xl">
+                                <span class="text-[9px] text-orange-700 font-bold block uppercase tracking-tight">Calories</span>
+                                <span class="text-sm font-bold text-orange-900" id="total-kcal">0</span>
+                            </div>
+                            <div class="bg-blue-50/70 border border-blue-100 p-2 rounded-xl">
+                                <span class="text-[9px] text-blue-700 font-bold block uppercase tracking-tight">Protein</span>
+                                <span class="text-sm font-bold text-blue-900" id="total-protein">0</span><span class="text-[9px] text-blue-700">g</span>
+                            </div>
+                            <div class="bg-amber-50/70 border border-amber-100 p-2 rounded-xl">
+                                <span class="text-[9px] text-amber-700 font-bold block uppercase tracking-tight">Carbs</span>
+                                <span class="text-sm font-bold text-amber-900" id="total-carbs">0</span><span class="text-[9px] text-amber-700">g</span>
+                            </div>
+                            <div class="bg-rose-50/70 border border-rose-100 p-2 rounded-xl">
+                                <span class="text-[9px] text-rose-700 font-bold block uppercase tracking-tight">Fats</span>
+                                <span class="text-sm font-bold text-rose-900" id="total-fats">0</span><span class="text-[9px] text-rose-700">g</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // 1. MASTER INGREDIENT DATABASE
+        // This acts as the single source of truth for all operational calculations.
+        let masterIngredients = [
+            { id: 'db_1', name: "Rolled Oats", unit: "g", price: 0.40, kcal: 3.8, protein: 0.13, carbs: 0.66, fats: 0.07 },
+            { id: 'db_2', name: "Whey Protein", unit: "g", price: 2.50, kcal: 4.0, protein: 0.80, carbs: 0.10, fats: 0.05 },
+            { id: 'db_3', name: "Mixed Berries", unit: "g", price: 1.20, kcal: 0.5, protein: 0.01, carbs: 0.12, fats: 0.00 },
+            { id: 'db_4', name: "Chicken Breast", unit: "g", price: 0.35, kcal: 1.65, protein: 0.31, carbs: 0.00, fats: 0.03 },
+            { id: 'db_5', name: "Jasmine Rice", unit: "g", price: 0.08, kcal: 1.3, protein: 0.03, carbs: 0.28, fats: 0.01 }
+        ];
+
+        // 2. MEAL PLAN RECIPE RELATIONAL DATABASE
+        // Stores ONLY the recipe structure, ingredient reference ID, and editable amounts.
+        const mealData = {
+            Monday: {
+                Breakfast: { 
+                    recipe: "Berry Protein Oatmeal", 
+                    ingredients: [
+                        { dbId: 'db_1', qty: 50 },
+                        { dbId: 'db_2', qty: 30 },
+                        { dbId: 'db_3', qty: 40 }
+                    ] 
+                },
+                Lunch: { recipe: "", ingredients: [] },
+                Dinner: { recipe: "", ingredients: [] }
+            },
+            Tuesday: { Breakfast: { recipe: "", ingredients: [] }, Lunch: { recipe: "", ingredients: [] }, Dinner: { recipe: "", ingredients: [] } },
+            Wednesday: { Breakfast: { recipe: "", ingredients: [] }, Lunch: { recipe: "", ingredients: [] }, Dinner: { recipe: "", ingredients: [] } },
+            Thursday: { Breakfast: { recipe: "", ingredients: [] }, Lunch: { recipe: "", ingredients: [] }, Dinner: { recipe: "", ingredients: [] } },
+            Friday: { Breakfast: { recipe: "", ingredients: [] }, Lunch: { recipe: "", ingredients: [] }, Dinner: { recipe: "", ingredients: [] } }
+        };
+
+        let currentDay = "Monday";
+        let dayCOGSGlobal = 0;
+
+        // UI RENDER: Master Database Table
+        function renderMasterDatabase() {
+            const container = document.getElementById('master-db-container');
+            container.innerHTML = "";
+
+            masterIngredients.forEach((item, index) => {
+                container.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors group">
+                        <td class="py-2 pl-2">
+                            <input type="text" value="${item.name}" onchange="updateMasterDB(${index}, 'name', this.value)" class="w-full bg-transparent border-b border-transparent focus:border-gray-300 focus:outline-none font-bold text-gray-800">
+                        </td>
+                        <td class="py-2 text-center">
+                            <input type="text" value="${item.unit}" onchange="updateMasterDB(${index}, 'unit', this.value)" class="w-12 text-center bg-gray-100 rounded text-gray-500 font-mono text-xs focus:outline-none">
+                        </td>
+                        <td class="py-2 text-center">
+                            <input type="number" step="any" value="${item.price}" oninput="updateMasterDB(${index}, 'price', this.value)" class="w-16 px-1 text-center bg-emerald-50 border border-emerald-200 rounded font-bold text-emerald-800 focus:outline-none">
+                        </td>
+                        <td class="py-2 text-center"><input type="number" step="any" value="${item.kcal}" oninput="updateMasterDB(${index}, 'kcal', this.value)" class="w-12 text-center bg-transparent border-b border-transparent focus:border-gray-300 focus:outline-none"></td>
+                        <td class="py-2 text-center"><input type="number" step="any" value="${item.protein}" oninput="updateMasterDB(${index}, 'protein', this.value)" class="w-12 text-center bg-transparent border-b border-transparent focus:border-gray-300 focus:outline-none"></td>
+                        <td class="py-2 text-center"><input type="number" step="any" value="${item.carbs}" oninput="updateMasterDB(${index}, 'carbs', this.value)" class="w-12 text-center bg-transparent border-b border-transparent focus:border-gray-300 focus:outline-none"></td>
+                        <td class="py-2 text-center"><input type="number" step="any" value="${item.fats}" oninput="updateMasterDB(${index}, 'fats', this.value)" class="w-12 text-center bg-transparent border-b border-transparent focus:border-gray-300 focus:outline-none"></td>
+                        <td class="py-2 text-center">
+                            <button onclick="removeMasterIngredient(${index})" class="text-gray-300 hover:text-red-500 transition-colors" title="Delete Master Item">✖</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateMasterDB(index, field, value) {
+            masterIngredients[index][field] = (field === 'name' || field === 'unit') ? value : (parseFloat(value) || 0);
+            fullSystemRender(); // Cascade updates everywhere
+        }
+
+        function addMasterIngredient() {
+            const newId = 'db_' + Math.random().toString(36).substr(2, 9);
+            masterIngredients.push({ id: newId, name: "New Ingredient", unit: "g", price: 0.00, kcal: 0, protein: 0, carbs: 0, fats: 0 });
+            fullSystemRender();
+        }
+
+        function removeMasterIngredient(index) {
+            // Note: Deleting a master ingredient will leave blanks in recipes that used it.
+            masterIngredients.splice(index, 1);
+            fullSystemRender();
+        }
+
+        // UI RENDER: Daily Menu Configurator
+        function renderMenuWorkspace() {
+            document.getElementById('current-day-title').innerText = `${currentDay} Menu Engineering`;
+            document.getElementById('right-panel-day-tag').innerText = currentDay;
+            const container = document.getElementById('meals-container');
+            container.innerHTML = ""; 
+
+            // Build Options Array for the Select Dropdowns
+            let optionsHTML = `<option value="" disabled selected>Select an ingredient...</option>`;
+            masterIngredients.forEach(dbItem => {
+                optionsHTML += `<option value="${dbItem.id}">${dbItem.name} (${dbItem.unit})</option>`;
+            });
+
+            const meals = mealData[currentDay];
+
+            for (const [mealName, data] of Object.entries(meals)) {
+                let mealHTML = `
+                    <div class="bg-white rounded-2xl shadow-xs border border-gray-200 overflow-hidden">
+                        <div class="bg-gray-50/70 px-5 py-3 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                            <div class="w-full sm:w-auto flex flex-col">
+                                <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">${mealName} Category</span>
+                                <input type="text" value="${data.recipe}" placeholder="Enter Recipe Name..."
+                                       onchange="mealData['${currentDay}']['${mealName}'].recipe = this.value;"
+                                       class="text-base font-bold text-gray-800 bg-transparent border-b border-transparent hover:border-gray-400 focus:border-emerald-600 focus:outline-none w-full sm:w-80 transition-all py-0.5">
+                            </div>
+                            <button onclick="addRecipeIngredient('${mealName}')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition-all">
+                                ➕ Add to Recipe
+                            </button>
+                        </div>
+                        
+                        <div class="p-4 overflow-x-auto">
+                            <table class="w-full text-left min-w-[700px] border-collapse">
+                                <thead>
+                                    <tr class="text-[10px] uppercase font-bold text-gray-400 border-b border-gray-100 pb-2">
+                                        <th class="py-2 pl-1 w-48">Ingredient Selection (DB)</th>
+                                        <th class="py-2 w-24 text-center text-blue-700 bg-blue-50/50 rounded-tl">✏️ Amount</th>
+                                        <th class="py-2 w-16 text-center text-gray-400">Unit</th>
+                                        <th class="py-2 w-16 text-center text-gray-400">Kcal</th>
+                                        <th class="py-2 w-16 text-center text-gray-400">Pro(g)</th>
+                                        <th class="py-2 w-16 text-center text-gray-400">Carb(g)</th>
+                                        <th class="py-2 w-16 text-center text-gray-400">Fat(g)</th>
+                                        <th class="py-2 text-right text-emerald-600 pr-2">Subtotal Cost</th>
+                                        <th class="py-2 w-8 text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 text-xs font-medium text-gray-700">
+                `;
+
+                if (data.ingredients.length === 0) {
+                    mealHTML += `<tr><td colspan="9" class="py-4 text-center text-gray-400 italic">No ingredients assigned yet.</td></tr>`;
+                } else {
+                    data.ingredients.forEach((ing, index) => {
+                        // Look up the master DB item to calculate the locked output fields
+                        const dbRef = masterIngredients.find(m => m.id === ing.dbId);
+                        
+                        let unit = "-", kcal = 0, pro = 0, carb = 0, fat = 0, cost = 0;
+                        if (dbRef) {
+                            unit = dbRef.unit;
+                            kcal = ing.qty * dbRef.kcal;
+                            pro = ing.qty * dbRef.protein;
+                            carb = ing.qty * dbRef.carbs;
+                            fat = ing.qty * dbRef.fats;
+                            cost = ing.qty * dbRef.price;
+                        }
+
+                        // Generate a tailored dropdown pre-selecting the correct item
+                        let localOptions = `<option value="" disabled ${!dbRef ? 'selected' : ''}>Select Database Item...</option>`;
+                        masterIngredients.forEach(item => {
+                            localOptions += `<option value="${item.id}" ${ing.dbId === item.id ? 'selected' : ''}>${item.name}</option>`;
+                        });
+
+                        mealHTML += `
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="py-2 pl-1">
+                                    <select onchange="updateRecipeRow('${mealName}', ${index}, 'dbId', this.value)" class="w-full bg-gray-50 border border-gray-200 text-gray-800 rounded p-1 font-semibold focus:outline-none focus:border-emerald-500">
+                                        ${localOptions}
+                                    </select>
+                                </td>
+                                <td class="py-2 text-center bg-blue-50/20">
+                                    <input type="number" step="any" value="${ing.qty}" oninput="updateRecipeRow('${mealName}', ${index}, 'qty', this.value)" class="w-20 px-1 py-1 text-center bg-white border border-blue-200 rounded font-bold text-blue-900 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-sm">
+                                </td>
+                                <td class="py-2 text-center font-mono text-gray-400">${unit}</td>
+                                <td class="py-2 text-center text-gray-500">${kcal.toFixed(0)}</td>
+                                <td class="py-2 text-center text-gray-500">${pro.toFixed(1)}</td>
+                                <td class="py-2 text-center text-gray-500">${carb.toFixed(1)}</td>
+                                <td class="py-2 text-center text-gray-500">${fat.toFixed(1)}</td>
+                                <td class="py-2 text-right font-bold text-emerald-600 pr-2">₱${cost.toFixed(2)}</td>
+                                <td class="py-2 text-center">
+                                    <button onclick="removeRecipeIngredient('${mealName}', ${index})" class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">✖</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+                mealHTML += `</tbody></table></div></div>`;
+                container.innerHTML += mealHTML;
+            }
+            
+            calculateFinancials();
+        }
+
+        // Data Manipulation Handlers for Recipes
+        function updateRecipeRow(mealName, index, field, value) {
+            mealData[currentDay][mealName].ingredients[index][field] = (field === 'qty') ? (parseFloat(value) || 0) : value;
+            fullSystemRender(); // Re-render to show updated locked math
+        }
+
+        function addRecipeIngredient(mealName) {
+            mealData[currentDay][mealName].ingredients.push({ dbId: "", qty: 100 });
+            fullSystemRender();
+        }
+
+        function removeRecipeIngredient(mealName, index) {
+            mealData[currentDay][mealName].ingredients.splice(index, 1);
+            fullSystemRender();
+        }
+
+        // GLOBAL MATH PIPELINE ENGINE
+        function calculateFinancials() {
+            // DAY MATH VARIABLES
+            let dCOGS = 0, dKcal = 0, dPro = 0, dCarb = 0, dFat = 0;
+            
+            // WEEK MATH VARIABLES
+            let wCOGS = 0, wKcal = 0, wPro = 0, wCarb = 0, wFat = 0;
+
+            // Loop entire structure to calculate Week AND isolated Day
+            for (const [day, meals] of Object.entries(mealData)) {
+                for (const [mealName, data] of Object.entries(meals)) {
+                    data.ingredients.forEach(ing => {
+                        const dbRef = masterIngredients.find(m => m.id === ing.dbId);
+                        if (dbRef) {
+                            const rowCost = ing.qty * dbRef.price;
+                            const rowKcal = ing.qty * dbRef.kcal;
+                            const rowPro = ing.qty * dbRef.protein;
+                            const rowCarb = ing.qty * dbRef.carbs;
+                            const rowFat = ing.qty * dbRef.fats;
+
+                            wCOGS += rowCost; wKcal += rowKcal; wPro += rowPro; wCarb += rowCarb; wFat += rowFat;
+                            
+                            if(day === currentDay) {
+                                dCOGS += rowCost; dKcal += rowKcal; dPro += rowPro; dCarb += rowCarb; dFat += rowFat;
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // Profit Margin Matrix
+            const marginInput = parseFloat(document.getElementById('profit-percentage').value) || 0;
+            const pricingMultiplier = marginInput >= 100 ? 2 : (1 / (1 - (marginInput / 100)));
+
+            // OUTPUT DAY UI
+            document.getElementById('display-cogs').innerText = dCOGS.toFixed(2);
+            document.getElementById('total-kcal').innerText = Math.round(dKcal);
+            document.getElementById('total-protein').innerText = Math.round(dPro);
+            document.getElementById('total-carbs').innerText = Math.round(dCarb);
+            document.getElementById('total-fats').innerText = Math.round(dFat);
+            
+            const daySale = dCOGS * pricingMultiplier;
+            document.getElementById('display-sale-price').innerText = daySale.toFixed(2);
+            document.getElementById('display-profit-dollars').innerText = (daySale - dCOGS).toFixed(2);
+
+            // OUTPUT WEEK UI
+            const weekSale = wCOGS * pricingMultiplier;
+            document.getElementById('weekly-cogs').innerText = wCOGS.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('weekly-revenue').innerText = weekSale.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('weekly-profit').innerText = (weekSale - wCOGS).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            
+            document.getElementById('weekly-kcal').innerText = Math.round(wKcal).toLocaleString();
+            document.getElementById('weekly-protein').innerText = Math.round(wPro).toLocaleString();
+            document.getElementById('weekly-carbs').innerText = Math.round(wCarb).toLocaleString();
+            document.getElementById('weekly-fats').innerText = Math.round(wFat).toLocaleString();
+        }
+
+        // Framework UI Controllers
+        function switchDay(day) {
+            currentDay = day;
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'font-bold', 'scale-101');
+                btn.classList.add('bg-white', 'text-gray-600', 'hover:bg-gray-50');
+            });
+            const activeBtn = document.getElementById(`btn-${day}`);
+            activeBtn.classList.remove('bg-white', 'text-gray-600', 'hover:bg-gray-50');
+            activeBtn.classList.add('bg-emerald-600', 'text-white', 'font-bold', 'scale-101');
+            
+            renderMenuWorkspace();
+        }
+
+        // Master App Sync Command
+        function fullSystemRender() {
+            renderMasterDatabase();
+            renderMenuWorkspace();
+        }
+
+        // Initial Boot
+        window.onload = function() {
+            fullSystemRender();
+        };
+    </script>
+</body>
+</html>
